@@ -1,15 +1,24 @@
-import numpy as np
 import random
+import numpy as np
 
-class network(object):
-	"""docstring for neural network"""
+class create_profile(object):
+	"""
+		The given class creates a three layered network for every profile created linked with a username.
+		The three inputs taken in consideration are :
+			flight time
+			dwell time
+			euclidian distance
+		Hence input layer is 3
+		Hidden layer is 5
+		Output layer is 2 i.e whether the given data belongs to the person in context or not
+	"""
 
-	def __init__(self, sizes):
-		# sizes is an iterable indicating the number of neurons in each layer
-		self.num_layers = len(sizes)
-		self.sizes = sizes
-		self.biases = [np.random.randn(y, ) for y in sizes[1:]]
-		self.weights = [np.random.randn(y, x) for x, y in zip(sizes[:-1], sizes[1:])]
+	def __init__(self, name):
+		self.name = name
+		self.sizes =[3,5,2]
+		self.num_layers = len(self.sizes)
+		self.biases = [np.random.randn(y, ) for y in self.sizes[1:]]
+		self.weights = [np.random.randn(y, x) for x, y in zip(self.sizes[:-1], self.sizes[1:])]
 
 	def sigmoid(self, z):
 		#activation function
@@ -71,12 +80,3 @@ class network(object):
 	def evaluate(self, test_data):
 		test_results = [(np.argmax(self.feed_forward(x)), y) for (x, y) in test_data]
 		return sum(int(x == y) for (x, y) in test_results)
-
-training_data = list(zip(np.array([[12,21,3], [11, 20, 3]]), np.array([[0,1], [0,1]])))
-net = network([3, 5, 2])
-test_data = list(zip(np.array([[13,22,3]]), np.array([1])))
-net.SGD(training_data, 10, 3.0) #train the neural network
-print(net.evaluate(test_data))
-
-
-
